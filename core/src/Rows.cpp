@@ -3,56 +3,56 @@
 // Getters
 std::vector<std::string> Rows::getValues() const
 {
-    return values;
+    return this->values;
 }
 
-std::string Rows::getValue(size_t index) const
+const std::string& Rows::getValue(size_t index) const
 {
-    if (index < values.size())
+    if (index < this->values.size())
     {
-        return values[index];
+        return this->values[index];
     }
     return "";
 }
 
-size_t Rows::size() const
+const size_t& Rows::size() const
 {
-    return values.size();
+    return this->values.size();
 }
 
 // Setters
-void Rows::setValues(const std::vector<std::string> &newValues)
+void Rows::setValues(const std::vector<std::string> &values)
 {
-    values = newValues;
+    this->values = values;
 }
 
 void Rows::setValue(size_t index, const std::string &value)
 {
-    if (index < values.size())
+    if (index < this->values.size())
     {
-        values[index] = value;
+        this->values[index] = value;
     }
 }
 
 void Rows::addValue(const std::string &value)
 {
-    values.push_back(value);
+    this->values.push_back(value);
 }
 
 void Rows::removeValue(size_t index)
 {
-    if (index < values.size())
+    if (index < this->values.size())
     {
-        values.erase(values.begin() + index);
+        this->values.erase(this->values.begin() + index);
     }
 }
 
 void Rows::clearValues()
 {
-    values.clear();
+    this->values.clear();
 }
 
 bool Rows::isEmpty() const
 {
-    return values.empty();
+    return this->values.empty();
 }

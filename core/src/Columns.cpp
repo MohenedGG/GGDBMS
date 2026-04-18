@@ -27,45 +27,45 @@ Column::Column(const std::string &name, const std::string &type)
 }
 
 // Getters
-std::string Column::getName() const
+const std::string& Column::getName() const
 {
-    return name;
+    return this->name;
 }
 
-std::string Column::getType() const
+const std::string& Column::getType() const
 {
-    return type;
+    return this->type;
 }
 
 // Setters
-void Column::setName(const std::string &newName)
+void Column::setName(const std::string &name)
 {
-    if (!newName.empty())
+    if (!name.empty())
     {
-        name = newName;
+        this->name = name;
     }
 }
 
-void Column::setType(const std::string &newType)
+void Column::setType(const std::string &type)
 {
-    if (isValidType(newType))
+    if (isValidType(type))
     {
-        type = newType;
+        this->type = type;
     }
 }
 
 // Utility methods
 bool Column::isNumeric() const
 {
-    return (type == "INT" || type == "int" || type == "FLOAT" || type == "float");
+    return (this->type == "INT" || this->type == "int" || this->type == "FLOAT" || this->type == "float");
 }
 
 bool Column::isText() const
 {
-    return (type == "TEXT" || type == "text");
+    return (this->type == "TEXT" || this->type == "text");
 }
 
 bool Column::isBoolean() const
 {
-    return (type == "BOOL" || type == "bool");
+    return (this->type == "BOOL" || this->type == "bool");
 }
