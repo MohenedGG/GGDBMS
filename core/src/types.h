@@ -1,3 +1,6 @@
+#pragma once
+#include <string>
+
 enum class DataTypes
 {
     INT,
@@ -57,4 +60,19 @@ enum class ArithmeticOperators
     SUBTRACT,
     MULTIPLY,
     DIVIDE
+};
+
+enum class ReferentialAction
+{
+    RESTRICT,
+    CASCADE
+};
+
+struct ForeignKey
+{
+    std::string childTableName;
+    std::string childColumnName;
+    std::string parentTableName;
+    std::string parentColumnName;
+    ReferentialAction onDelete = ReferentialAction::RESTRICT;
 };
