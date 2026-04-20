@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "./core/src/Database.h"
-#include "./core/src/DatabasePersistence.h"
+#include "./src/Database.h"
+#include "./src/DatabasePersistence.h"
 
 using namespace std;
 
