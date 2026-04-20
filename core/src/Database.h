@@ -13,7 +13,7 @@ private:
     std::vector<ForeignKey> foreignKeys;
 
     static constexpr size_t kNotFound = static_cast<size_t>(-1);
-    
+
     size_t findTableIndex(const std::string &tableName) const;
     size_t findColumnIndex(const Table &table, const std::string &columnName) const;
     bool hasValueInColumn(const Table &table, size_t columnIndex, const std::string &value) const;
