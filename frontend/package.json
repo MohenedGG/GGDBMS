@@ -1,0 +1,15 @@
+{
+  "name": "ggdb-electron",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GGDB desktop demo with Electron + C++ engine",
+  "main": "electron.main.js",
+  "scripts": {
+    "build:engine": "g++ ../core/main.cpp ../core/src/*.cpp -o ../main.exe",
+    "start": "electron .",
+    "dev": "npm run build:engine && npm start"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7"
+  }
+}

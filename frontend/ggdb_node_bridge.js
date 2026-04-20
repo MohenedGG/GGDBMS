@@ -5,7 +5,7 @@ const execFileAsync = promisify(execFile);
 
 class GGDBBridge {
     constructor(options = {}) {
-        this.executablePath = options.executablePath || "./main.exe";
+        this.executablePath = options.executablePath || "../main.exe";
         this.snapshotPath = options.snapshotPath || "./ggdb.snapshot";
         this.cwd = options.cwd;
     }
