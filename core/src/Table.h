@@ -11,10 +11,14 @@ private:
     std::vector<Column> cols;
     std::vector<Rows> rows;
     std::string primaryKeyColumnName;
+    std::vector<std::string> uniqueColumnNames;
+    std::vector<std::string> notNullColumnNames;
 
     bool isValidRowSize(const Rows &row) const;
     size_t findColumnIndex(const std::string &columnName) const;
     bool isPrimaryKeyValueUnique(const Rows &row) const;
+    bool areUniqueConstraintsSatisfied(const Rows &row) const;
+    bool areNotNullConstraintsSatisfied(const Rows &row) const;
 
 public:
     Table();
@@ -31,6 +35,14 @@ public:
     bool hasPrimaryKey() const;
     const std::string &getPrimaryKeyColumnName() const;
     size_t getPrimaryKeyColumnIndex() const;
+
+    bool addUniqueConstraint(const std::string &columnName);
+    bool hasUniqueConstraint(const std::string &columnName) const;
+    const std::vector<std::string> &getUniqueColumns() const;
+
+    bool addNotNullConstraint(const std::string &columnName);
+    bool hasNotNullConstraint(const std::string &columnName) const;
+    const std::vector<std::string> &getNotNullColumns() const;
 
     bool addColumn(const Column &column);
     bool addRow(const Rows &row);
