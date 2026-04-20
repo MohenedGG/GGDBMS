@@ -10,8 +10,8 @@ private:
 public:
     // Getters
     std::vector<std::string> getValues() const;
-    const std::string& getValue(size_t index) const;
-    const size_t& size() const;
+    std::string getValue(size_t index) const;
+    size_t size() const;
 
     // Setters
     void setValues(const std::vector<std::string> &newValues);

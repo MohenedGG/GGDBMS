@@ -6,16 +6,16 @@ std::vector<std::string> Rows::getValues() const
     return this->values;
 }
 
-const std::string& Rows::getValue(size_t index) const
+std::string Rows::getValue(size_t index) const
 {
     if (index < this->values.size())
     {
         return this->values[index];
     }
-    return "";
+    return std::string();
 }
 
-const size_t& Rows::size() const
+size_t Rows::size() const
 {
     return this->values.size();
 }

@@ -306,6 +306,11 @@ bool Database::addForeignKey(const std::string &childTableName,
         return false;
     }
 
+    if (!parentTable->hasPrimaryKey() || parentTable->getPrimaryKeyColumnName() != parentColumnName)
+    {
+        return false;
+    }
+
     const std::string &childType = childTable->getColumns()[childColumnIndex].getType();
     const std::string &parentType = parentTable->getColumns()[parentColumnIndex].getType();
     if (!equalsIgnoreCase(childType, parentType))
