@@ -1,0 +1,137 @@
+%%{init: {'theme':'base','themeVariables': {
+  'background':'#ffffff',
+  'primaryColor':'#f5f7ff',
+  'primaryBorderColor':'#3b82f6',
+  'primaryTextColor':'#0f172a',
+  'lineColor':'#1d4ed8',
+  'textColor':'#0f172a'
+}}}%%
+
+classDiagram
+    direction LR
+
+    class Database {
+      -name: string
+      -tables: vector~Table~
+      -foreignKeys: vector~ForeignKey~
+      -kNotFound: size_t
+      -findTableIndex(tableName): size_t
+      -findColumnIndex(table,columnName): size_t
+      -hasValueInColumn(table,columnIndex,value): bool
+      -canInsertWithRelations(tableName,row): bool
+      +Database()
+      +Database(name)
+      +~Database()
+      +getName(): string
+      +setName(newName)
+      +createTable(tableName): bool
+      +createTable(table): bool
+      +dropTable(tableName): bool
+      +insertRow(tableName,row): bool
+      +deleteRow(tableName,rowIndex): bool
+      +hasTable(tableName): bool
+      +addForeignKey(foreignKey): bool
+      +addForeignKey(childTableName,childColumnName,parentTableName,parentColumnName,onDelete): bool
+      +getTable(tableName): Table*
+      +getTable(tableName): const Table*
+      +getTables(): const vector~Table~
+      +getForeignKeys(): const vector~ForeignKey~
+      +listTableNames(): vector~string~
+      +tableCount(): size_t
+      +clearDatabase()
+    }
+
+    class Table {
+      -name: string
+      -cols: vector~Column~
+      -rows: vector~Rows~
+      -primaryKeyColumnName: string
+      -uniqueColumnNames: vector~string~
+      -notNullColumnNames: vector~string~
+      -isValidRowSize(row): bool
+      -findColumnIndex(columnName): size_t
+      -isPrimaryKeyValueUnique(row): bool
+      -areUniqueConstraintsSatisfied(row): bool
+      -areNotNullConstraintsSatisfied(row): bool
+      +Table()
+      +Table(name)
+      +~Table()
+      +getName(): string
+      +setName(newName)
+      +getColumns(): const vector~Column~
+      +getRows(): const vector~Rows~
+      +setPrimaryKey(columnName): bool
+      +hasPrimaryKey(): bool
+      +getPrimaryKeyColumnName(): string
+      +getPrimaryKeyColumnIndex(): size_t
+      +addUniqueConstraint(columnName): bool
+      +hasUniqueConstraint(columnName): bool
+      +getUniqueColumns(): const vector~string~
+      +addNotNullConstraint(columnName): bool
+      +hasNotNullConstraint(columnName): bool
+      +getNotNullColumns(): const vector~string~
+      +addColumn(column): bool
+      +addRow(row): bool
+      +removeColumn(index): bool
+      +removeRow(index): bool
+      +clearRows()
+      +clearTable()
+      +columnCount(): size_t
+      +rowCount(): size_t
+    }
+
+    class Column {
+      -name: string
+      -type: string
+      -isValidType(dataType): bool
+      +Column(name,type)
+      +getName(): string
+      +getType(): string
+      +setName(newName)
+      +setType(newType)
+      +isNumeric(): bool
+      +isText(): bool
+      +isBoolean(): bool
+    }
+
+    class Rows {
+      -values: vector~string~
+      +Rows()
+      +getValues(): vector~string~
+      +getValue(index): string
+      +size(): size_t
+      +setValues(newValues)
+      +setValue(index,value)
+      +addValue(value)
+      +removeValue(index)
+      +clearValues()
+      +isEmpty(): bool
+    }
+
+    class DatabasePersistence {
+      <<utility>>
+      +saveToFile(database, path): bool
+      +loadFromFile(path, database): bool
+    }
+
+    class ForeignKey {
+      +childTableName: string
+      +childColumnName: string
+      +parentTableName: string
+      +parentColumnName: string
+      +onDelete: ReferentialAction
+      +ForeignKey()
+    }
+
+    class ReferentialAction {
+      <<enumeration>>
+      RESTRICT
+      CASCADE
+    }
+
+    Database "1" o-- "0..*" Table : tables
+    Database "1" o-- "0..*" ForeignKey : foreignKeys
+    Table "1" *-- "0..*" Column : cols
+    Table "1" *-- "0..*" Rows : rows
+    ForeignKey --> ReferentialAction : onDelete
+    DatabasePersistence ..> Database : save/load

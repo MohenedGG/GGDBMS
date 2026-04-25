@@ -1,15 +1,45 @@
 {
-  "name": "ggdb-electron",
-  "version": "0.1.0",
-  "private": true,
-  "description": "GGDB desktop demo with Electron + C++ engine",
-  "main": "electron.main.js",
-  "scripts": {
-    "build:engine": "g++ ../core/main.cpp ../core/src/*.cpp -o ../main.exe",
-    "start": "electron .",
-    "dev": "npm run build:engine && npm start"
-  },
-  "devDependencies": {
-    "electron": "^31.7.7"
-  }
+    "name": "ggdb-electron",
+    "version": "0.1.0",
+    "private": true,
+    "description": "GGDB desktop demo with Electron + C++ engine",
+    "main": "electron.main.js",
+    "scripts": {
+        "build:engine": "g++ ../core/main.cpp ../core/src/*.cpp -o ../main.exe",
+        "start": "electron .",
+        "dev": "npm run build:engine && npm start",
+        "dist:win": "npm run build:engine && .\\node_modules\\.bin\\electron-builder.cmd --win --x64 --publish never"
+    },
+    "devDependencies": {
+        "electron": "^31.7.7",
+        "electron-builder": "^26.8.1"
+    },
+    "build": {
+        "appId": "com.ggdb.desktop",
+        "productName": "GGDB Studio",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "electron.main.js",
+            "electron.preload.js",
+            "electron.renderer.html",
+            "electron.renderer.js",
+            "ggdb_node_bridge.js",
+            "style.css",
+            "logo.png",
+            "package.json"
+        ],
+        "extraResources": [
+            {
+                "from": "../main.exe",
+                "to": "main.exe"
+            }
+        ],
+        "win": {
+            "target": [
+                "nsis"
+            ]
+        }
+    }
 }

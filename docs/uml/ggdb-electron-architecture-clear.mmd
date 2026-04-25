@@ -1,0 +1,24 @@
+%%{init: {'theme':'base','themeVariables': {
+  'background':'#ffffff',
+  'primaryColor':'#f8fafc',
+  'primaryBorderColor':'#1d4ed8',
+  'primaryTextColor':'#0f172a',
+  'lineColor':'#1d4ed8',
+  'textColor':'#0f172a'
+}}}%%
+
+flowchart TB
+    linkStyle default stroke:#1d4ed8,stroke-width:4px
+
+    UI[Renderer UI\nhtml + renderer.js]
+    PRE[Preload Bridge\nelectron.preload.js]
+    IPC[Electron Main IPC\nggdb:call]
+    BR[Node Bridge\nggdb_node_bridge.js]
+    EXE[C++ Engine\nmain.exe --json]
+    SNAP[(Snapshot File)]
+
+    UI -->|1. invoke API| PRE
+    PRE -->|2. ipcRenderer.invoke| IPC
+    IPC -->|3. dispatch| BR
+    BR -->|4. execute command| EXE
+    EXE -->|5. read/write| SNAP

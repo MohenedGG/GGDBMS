@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GGDB Studio</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="logo.png" type="image/png" />
+    </head>
+    <body>
+        <main class="shell">
+            <section class="panel left">
+                <h1 class="title">GGDB Studio</h1>
+                <p class="subtitle">
+                    Full control panel with table/row/column selection and edit
+                    actions.
+                </p>
+
+                <div id="status" class="status">Ready.</div>
+
+                <div class="selection">
+                    <div id="selectedTableChip" class="chip">Table: -</div>
+                    <div id="selectedColumnChip" class="chip">Column: -</div>
+                    <div id="selectedRowChip" class="chip">Row: -</div>
+                </div>
+
+                <div id="leftTabs" class="left-tabs">
+                    <button class="left-tab is-active" data-left-tab="database">
+                        Database
+                    </button>
+                    <button class="left-tab" data-left-tab="schema">
+                        Schema
+                    </button>
+                    <button class="left-tab" data-left-tab="rows">Rows</button>
+                    <button class="left-tab" data-left-tab="csv">CSV</button>
+                </div>
+
+                <div class="group" data-left-panel="database">
+                    <h3>Snapshot & Database</h3>
+                    <div class="row one">
+                        <input id="snapshotPath" placeholder="Snapshot path" />
+                    </div>
+                    <div class="row">
+                        <button id="btnSetSnapshot" class="alt">
+                            Set Path
+                        </button>
+                        <button id="btnOpenSnapshot" class="alt">
+                            Open File
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button id="btnSaveSnapshot">Save As</button>
+                        <button id="btnRefreshAll" class="alt">Refresh</button>
+                    </div>
+                    <div class="row">
+                        <input
+                            id="dbName"
+                            placeholder="Database name"
+                            value="GGDBDesktop"
+                        />
+                        <button id="btnInit">Init New DB</button>
+                    </div>
+                    <div class="row one">
+                        <button id="btnPing" class="alt">Ping Engine</button>
+                    </div>
+                </div>
+
+                <div class="group" data-left-panel="schema">
+                    <h3>Schema</h3>
+                    <div class="row one">
+                        <input id="tableName" placeholder="Table name" />
+                    </div>
+                    <div class="row">
+                        <button id="btnCreateTable">Create Table</button>
+                        <button id="btnDropTable" class="warn">
+                            Drop Table
+                        </button>
+                    </div>
+                    <div class="row">
+                        <input id="columnName" placeholder="Column name" />
+                        <select id="columnType">
+                            <option value="TEXT">TEXT</option>
+                            <option value="INT">INT</option>
+                            <option value="FLOAT">FLOAT</option>
+                            <option value="BOOL">BOOL</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <button id="btnAddColumn">Add Column</button>
+                        <button id="btnRemoveColumn" class="warn">
+                            Remove Column
+                        </button>
+                    </div>
+                    <div class="row">
+                        <button id="btnSetPk">Set Primary Key</button>
+                        <button id="btnAddUnique" class="alt">
+                            Add Unique
+                        </button>
+                    </div>
+                    <div class="row one">
+                        <button id="btnAddNotNull" class="alt">
+                            Add Not Null
+                        </button>
+                    </div>
+                </div>
+
+                <div class="group" data-left-panel="schema">
+                    <h3>Foreign Key</h3>
+                    <div class="row">
+                        <input id="fkChildTable" placeholder="Child table" />
+                        <input id="fkChildColumn" placeholder="Child column" />
+                    </div>
+                    <div class="row">
+                        <input id="fkParentTable" placeholder="Parent table" />
+                        <input
+                            id="fkParentColumn"
+                            placeholder="Parent column"
+                        />
+                    </div>
+                    <div class="row">
+                        <select id="fkOnDelete">
+                            <option value="RESTRICT">RESTRICT</option>
+                            <option value="CASCADE">CASCADE</option>
+                        </select>
+                        <button id="btnAddFk">Add Foreign Key</button>
+                    </div>
+                </div>
+
+                <div class="group" data-left-panel="rows">
+                    <h3>Rows</h3>
+                    <div class="row">
+                        <input id="insertTable" placeholder="Table name" />
+                        <input
+                            id="selectedRowIndex"
+                            placeholder="Selected row index"
+                            readonly
+                        />
+                    </div>
+                    <div class="row one">
+                        <textarea
+                            id="insertValues"
+                            rows="2"
+                            placeholder="Values (comma separated), e.g. 1,Ali,ali@mail.com"
+                        ></textarea>
+                    </div>
+                    <div class="row">
+                        <button id="btnInsertRow">Insert Row</button>
+                        <button id="btnReplaceRow" class="alt">
+                            Replace Selected Row
+                        </button>
+                    </div>
+                    <div class="row one">
+                        <button id="btnDeleteRow" class="warn">
+                            Delete Selected Row
+                        </button>
+                    </div>
+                </div>
+
+                <div class="group" data-left-panel="csv">
+                    <h3>CSV</h3>
+                    <div class="row one">
+                        <input
+                            id="csvTable"
+                            placeholder="Table name for CSV import/export"
+                        />
+                    </div>
+                    <div class="row">
+                        <button id="btnImportCsv" class="alt">
+                            Import CSV
+                        </button>
+                        <button id="btnExportCsv">Export CSV</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel right">
+                <div class="right-head">
+                    <h2>Data Explorer</h2>
+                    <div id="meta" class="meta">No tables loaded.</div>
+                </div>
+
+                <div class="table-switcher">
+                    <label for="tablePicker">Tables</label>
+                    <select id="tablePicker">
+                        <option value="">No tables available</option>
+                    </select>
+                </div>
+
+                <div id="activeTableSummary" class="active-summary">
+                    Select a table to view its data and constraints.
+                </div>
+
+                <div>
+                    <div class="meta relation-title">
+                        Tables Relations Matrix
+                    </div>
+                    <div id="relationsWrap" class="relations-wrap">
+                        <div class="empty">No relations yet.</div>
+                    </div>
+                </div>
+                <div id="tablesGrid" class="tables-grid">
+                    <div class="empty">
+                        Initialize a database or open a snapshot file to start.
+                    </div>
+                </div>
+                <pre id="log" class="log">{}</pre>
+            </section>
+        </main>
+
+        <script src="./electron.renderer.js"></script>
+    </body>
+</html>
