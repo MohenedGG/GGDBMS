@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cctype>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
@@ -7,6 +8,7 @@
 #include <vector>
 #include "./src/Database.h"
 #include "./src/DatabasePersistence.h"
+#include "./src/CsvManager.h"
 
 using namespace std;
 
@@ -400,6 +402,8 @@ static int runJsonMode(int argc, char *argv[])
     }
 
     bool mutated = false;
+    string successMessage = "Command executed.";
+    string successDataJson = "{}";
 
     if (command == "list_tables")
     {
@@ -703,6 +707,51 @@ static int runJsonMode(int argc, char *argv[])
         printJsonResult(true, "Table loaded.", tableToJson(*table));
         return 0;
     }
+    else if (command == "export_csv")
+    {
+        if (argc < 6)
+        {
+            printJsonResult(false, "Usage: --json export_csv <snapshotPath> <tableName> <csvFilePath>");
+            return 1;
+        }
+
+        const Table *table = db.getTable(argv[4]);
+        if (table == nullptr)
+        {
+            printJsonResult(false, "Table not found.");
+            return 1;
+        }
+
+        string errorMessage;
+        if (!CsvManager::exportTable(*table, argv[5], errorMessage))
+        {
+            printJsonResult(false, errorMessage);
+            return 1;
+        }
+
+        printJsonResult(true, "CSV exported.", "{\"path\":" + toJsonString(argv[5]) + "}");
+        return 0;
+    }
+    else if (command == "import_csv")
+    {
+        if (argc < 6)
+        {
+            printJsonResult(false, "Usage: --json import_csv <snapshotPath> <tableName> <csvFilePath>");
+            return 1;
+        }
+
+        size_t importedRows = 0;
+        string errorMessage;
+        if (!CsvManager::importTable(db, argv[4], argv[5], importedRows, errorMessage))
+        {
+            printJsonResult(false, errorMessage);
+            return 1;
+        }
+
+        mutated = true;
+        successMessage = "CSV imported.";
+        successDataJson = "{\"importedRows\":" + to_string(importedRows) + "}";
+    }
     else
     {
         printJsonResult(false, "Unknown command.");
@@ -715,7 +764,7 @@ static int runJsonMode(int argc, char *argv[])
         return 1;
     }
 
-    printJsonResult(true, "Command executed.");
+    printJsonResult(true, successMessage, successDataJson);
     return 0;
 }
 
