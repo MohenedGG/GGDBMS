@@ -294,6 +294,13 @@ bool Table::addColumn(const Column &column)
     }
 
     this->cols.push_back(column);
+
+    // Keep existing rows aligned with the new schema by appending an empty value.
+    for (Rows &row : this->rows)
+    {
+        row.addValue("");
+    }
+
     return true;
 }
 
